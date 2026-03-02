@@ -92,6 +92,22 @@ Event data lives in `api/db.json`. Edit it freely — the server reloads automat
 
 json-server stores whatever JSON you send it — it does no validation. This means if you POST an order with `items` in one place and `tickets` somewhere else, both will be saved without error. Decide on a consistent shape for each resource early and stick to it throughout your app, otherwise your UI will break in hard-to-debug ways.
 
+### Switching to the real API
+
+If you want to move from the mock API to the real Express backend (the `api/` package at the project root), follow these steps:
+
+1. **Stop the mock API** (`npm run api` / `npm run dev:all`).
+2. **Set up and start the real backend** — follow the instructions in `api/README.md`.
+3. **Update `VITE_API_URL` in your `.env`** to point at the real backend, including its `/api` path prefix:
+
+```
+VITE_API_URL=http://localhost:3001/api
+```
+
+> Note: both servers default to port 3001. If they are running at the same time, change one of the ports to avoid a conflict — update `API_PORT` in this package's `.env` for the mock API, or `PORT` in `api/.env` for the real backend.
+
+Your fetch calls via the `api()` helper will work without any other changes.
+
 ## Calling the API using `fetch` and the `api()` helper
 
 When you need data from the API, you can use `fetch` but it's important to not hardcode the URLs since they will differ between your development environment and the deployment environment. For this we can use the `api()` helper function.
