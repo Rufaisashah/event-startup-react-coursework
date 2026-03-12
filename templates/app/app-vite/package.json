@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "api": "nodemon --watch api/db.json api/server.cjs",
+    "api": "nodemon api/server.cjs",
     "dev:all": "concurrently \"npm run dev\" \"npm run api\"",
     "build": "vite build",
     "format": "npx prettier . --write",
