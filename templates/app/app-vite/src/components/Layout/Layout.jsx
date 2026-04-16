@@ -52,7 +52,20 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <footer>{/* Footer content goes here */}</footer>
+      <footer
+        style={{
+          borderTop: "1px solid #eee",
+          padding: "20px",
+          textAlign: "center",
+          marginTop: "40px",
+          color: "#666",
+          fontSize: "14px",
+        }}
+      >
+        <p>
+          © 2026 HYF Events · <Link to="/events">Browse Events</Link>
+        </p>
+      </footer>
     </div>
   );
 }
