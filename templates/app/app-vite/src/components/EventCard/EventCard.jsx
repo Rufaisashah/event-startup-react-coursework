@@ -1,6 +1,6 @@
-// src/components/EventCard/EventCard.jsx
 import { Link } from "react-router-dom";
 import "./EventCard.css";
+
 
 export default function EventCard({ event }) {
   const {

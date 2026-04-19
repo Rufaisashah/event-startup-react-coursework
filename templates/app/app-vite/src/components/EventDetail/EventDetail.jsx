@@ -1,14 +1,11 @@
-// src/components/EventDetail/EventDetail.jsx
 import events from "../../data/events.js";
 import { Link } from "react-router-dom";
-
-// Week 3: replace hardcoded index with useParams() + fetch GET /events/:id
-const event = events[0];
+import "./EventDetail.css";
 
 export default function EventDetail() {
+  const event = events[0];
   return (
     <div className="event-detail">
-
       <Link to="/events" className="back-link">
         ← Back to all events
       </Link>
@@ -42,7 +39,9 @@ export default function EventDetail() {
         </div>
         <div className="meta-item">
           <span className="meta-label">Availability</span>
-          <span className={`meta-value ${event.ticketsAvailable === 0 ? "sold-out" : "available"}`}>
+          <span
+            className={`meta-value ${event.ticketsAvailable === 0 ? "sold-out" : "available"}`}
+          >
             {event.ticketsAvailable === 0
               ? "Sold out"
               : `${event.ticketsAvailable} tickets left`}
@@ -54,7 +53,6 @@ export default function EventDetail() {
         <h2>About this event</h2>
         <p>{event.description}</p>
       </div>
-
     </div>
   );
 }
