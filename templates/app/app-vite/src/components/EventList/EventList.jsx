@@ -60,7 +60,7 @@ export default function EventList() {
         </p>
       ) : (
         <div className="event-list">
-          {sorted.map((event) => (
+          {filteredAndSortedEvents.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
         </div>
