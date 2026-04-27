@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./EventDetail.css";
 
 export default function EventDetail() {
-  const event = events[1];
+  const event = events[0];
   const [quantity, setQuantity] = useState(1);
 
   return (

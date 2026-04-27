@@ -11,11 +11,17 @@ export default function EventList() {
     filterCategory === "all" ? true : e.category === filterCategory,
   );
 
-  const sorted = [...filtered].sort((a, b) => {
-    if (sortBy === "date") return new Date(a.date) - new Date(b.date);
-    if (sortBy === "price") return a.price - b.price;
-    if (sortBy === "name") return a.name.localeCompare(b.name);
-    return 0;
+  const filteredAndSortedEvents = [...filtered].sort((a, b) => {
+    switch (sortBy) {
+      case "date":
+        return new Date(a.date) - new Date(b.date);
+      case "price":
+        return a.price - b.price;
+      case "name":
+        return a.name.localeCompare(b.name);
+      default:
+        return 0;
+    }
   });
 
   return (
@@ -48,8 +54,10 @@ export default function EventList() {
         </div>
       </div>
 
-      {sorted.length === 0 ? (
-        <p className="event-list-empty">No events found.</p>
+      {filteredAndSortedEvents.length === 0 ? (
+        <p className="event-list-empty">
+          No {filterCategory === "all" ? "" : filterCategory} events found.
+        </p>
       ) : (
         <div className="event-list">
           {sorted.map((event) => (
