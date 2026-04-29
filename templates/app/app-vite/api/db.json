@@ -1,5 +1,11 @@
 {
-  "users": [],
+  "users": [
+    {
+      "email": "abc@abc.com",
+      "password": "$2a$10$oB2z2RzHZjQGknznkFJyZOgxr68HroX6b8rbJSylEy8.mgQWOdej6",
+      "id": 1
+    }
+  ],
   "events": [
     {
       "id": 1,
