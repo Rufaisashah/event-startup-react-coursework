@@ -9,9 +9,12 @@ export default function EventList() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
-    fetch(api("/events"))
+    setLoading(true);
+   fetch(api(`/events?name_like=${search}`))
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load events");
         return res.json();
@@ -24,20 +27,31 @@ export default function EventList() {
         setError(err.message);
         setLoading(false);
       });
-  }, []);
+  }, [search]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearch(searchInput);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   const categories = ["all", ...new Set(events.map((e) => e.category))];
 
   const filtered = events.filter((e) =>
-    filterCategory === "all" ? true : e.category === filterCategory
+    filterCategory === "all" ? true : e.category === filterCategory,
   );
 
   const filteredAndSortedEvents = [...filtered].sort((a, b) => {
     switch (sortBy) {
-      case "date": return new Date(a.date) - new Date(b.date);
-      case "price": return a.price - b.price;
-      case "name": return a.name.localeCompare(b.name);
-      default: return 0;
+      case "date":
+        return new Date(a.date) - new Date(b.date);
+      case "price":
+        return a.price - b.price;
+      case "name":
+        return a.name.localeCompare(b.name);
+      default:
+        return 0;
     }
   });
 
@@ -46,6 +60,15 @@ export default function EventList() {
 
   return (
     <div className="event-list-container">
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search events..."
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          className="search-input"
+        />
+      </div>
       <div className="event-list-header">
         <h1 className="event-list-title">Upcoming Events</h1>
         <div className="event-list-controls">
