@@ -1,34 +1,53 @@
-import { useState } from "react";
-import events from "../../data/events.js";
+import { useState, useEffect } from "react";
+import api from "../../api.js";
 import EventCard from "../EventCard/EventCard.jsx";
 import "./EventList.css";
 
 export default function EventList() {
   const [sortBy, setSortBy] = useState("date");
   const [filterCategory, setFilterCategory] = useState("all");
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch(api("/events"))
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load events");
+        return res.json();
+      })
+      .then((data) => {
+        setEvents(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
   const categories = ["all", ...new Set(events.map((e) => e.category))];
+
   const filtered = events.filter((e) =>
-    filterCategory === "all" ? true : e.category === filterCategory,
+    filterCategory === "all" ? true : e.category === filterCategory
   );
 
   const filteredAndSortedEvents = [...filtered].sort((a, b) => {
     switch (sortBy) {
-      case "date":
-        return new Date(a.date) - new Date(b.date);
-      case "price":
-        return a.price - b.price;
-      case "name":
-        return a.name.localeCompare(b.name);
-      default:
-        return 0;
+      case "date": return new Date(a.date) - new Date(b.date);
+      case "price": return a.price - b.price;
+      case "name": return a.name.localeCompare(b.name);
+      default: return 0;
     }
   });
+
+  if (loading) return <p className="status-message">Loading events...</p>;
+  if (error) return <p className="status-message error">{error}</p>;
 
   return (
     <div className="event-list-container">
       <div className="event-list-header">
         <h1 className="event-list-title">Upcoming Events</h1>
-
         <div className="event-list-controls">
           <select
             value={filterCategory}
@@ -41,7 +60,6 @@ export default function EventList() {
               </option>
             ))}
           </select>
-
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
