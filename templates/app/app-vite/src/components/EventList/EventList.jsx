@@ -11,10 +11,12 @@ export default function EventList() {
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventsPerPage = 4;
 
   useEffect(() => {
     setLoading(true);
-   fetch(api(`/events?name_like=${search}`))
+    fetch(api(`/events?name_like=${search}`))
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load events");
         return res.json();
@@ -35,6 +37,9 @@ export default function EventList() {
 
     return () => clearTimeout(timer);
   }, [searchInput]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, filterCategory]);
 
   const categories = ["all", ...new Set(events.map((e) => e.category))];
 
@@ -54,6 +59,12 @@ export default function EventList() {
         return 0;
     }
   });
+  const totalPages = Math.ceil(filteredAndSortedEvents.length / eventsPerPage);
+  const startIndex = (currentPage - 1) * eventsPerPage;
+  const paginatedEvents = filteredAndSortedEvents.slice(
+    startIndex,
+    startIndex + eventsPerPage,
+  );
 
   if (loading) return <p className="status-message">Loading events...</p>;
   if (error) return <p className="status-message error">{error}</p>;
@@ -94,16 +105,36 @@ export default function EventList() {
           </select>
         </div>
       </div>
-
       {filteredAndSortedEvents.length === 0 ? (
         <p className="event-list-empty">
           No {filterCategory === "all" ? "" : filterCategory} events found.
         </p>
       ) : (
         <div className="event-list">
-          {filteredAndSortedEvents.map((event) => (
+          {paginatedEvents.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
+        </div>
+      )}
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            className="pagination-btn"
+            onClick={() => setCurrentPage((p) => p - 1)}
+            disabled={currentPage === 1}
+          >
+            ← Previous
+          </button>
+          <span className="pagination-info">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            className="pagination-btn"
+            onClick={() => setCurrentPage((p) => p + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next →
+          </button>
         </div>
       )}
     </div>
