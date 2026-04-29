@@ -55,3 +55,13 @@
     margin-bottom: 20px;
   }
 }
+.status-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #666;
+}
+
+.status-message.error {
+  color: #c0392b;
+}
