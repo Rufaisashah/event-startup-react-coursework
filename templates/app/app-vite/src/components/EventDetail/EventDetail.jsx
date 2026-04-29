@@ -1,12 +1,37 @@
-import { useState } from "react";
-import events from "../../data/events.js";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import api from "../../api.js";
 import "./EventDetail.css";
 
 export default function EventDetail() {
-  const event = events[0];
-  const isFree = event.price === 0;
+  const { id } = useParams();
+  const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(api(`/events/${id}`))
+      .then((res) => {
+        if (!res.ok) throw new Error("Event not found");
+        return res.json();
+      })
+      .then((data) => {
+        setEvent(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) return <p className="status-message">Loading event...</p>;
+  if (error) return <p className="status-message error">{error}</p>;
+  if (!event) return null;
+
+  const isFree = event.price === 0;
 
   return (
     <div className="event-detail">
@@ -44,11 +69,15 @@ export default function EventDetail() {
         <div className="meta-item">
           <span className="meta-label">Availability</span>
           <span
-            className={`meta-value ${event.ticketsAvailable === 0 ? "sold-out" : "available"}`}
+            className={`meta-value ${
+              event.ticketsAvailable === 0 ? "sold-out" : "available"
+            }`}
           >
             {event.ticketsAvailable === 0
               ? "Sold out"
-              : `${event.ticketsAvailable} ticket${event.ticketsAvailable === 1 ? "" : "s"} left`}
+              : `${event.ticketsAvailable} ticket${
+                  event.ticketsAvailable === 1 ? "" : "s"
+                } left`}
           </span>
         </div>
       </div>
@@ -57,10 +86,10 @@ export default function EventDetail() {
         <h2>About this event</h2>
         <p>{event.description}</p>
       </div>
+
       {event.ticketsAvailable > 0 && (
         <div className="ticket-selector">
           <h2>Get tickets</h2>
-
           <div className="quantity-control">
             <button
               aria-label="Decrease quantity"
@@ -69,7 +98,6 @@ export default function EventDetail() {
             >
               −
             </button>
-
             <span className="quantity-value">{quantity}</span>
             <button
               aria-label="Increase quantity"
@@ -81,11 +109,9 @@ export default function EventDetail() {
               +
             </button>
           </div>
-
           <p className="quantity-total">
             Total: {isFree ? "Free" : `€${event.price * quantity}`}
           </p>
-
           <button className="btn-add-to-cart">
             Add {quantity} ticket{quantity === 1 ? "" : "s"} to cart
           </button>
