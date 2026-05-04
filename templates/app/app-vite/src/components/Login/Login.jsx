@@ -18,17 +18,22 @@ export default function Login() {
 
   function validate() {
     const errors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!email.trim()) errors.email = "Email is required";
-    else if (!email.includes("@")) errors.email = "Enter a valid email";
+    else if (!emailRegex.test(email)) errors.email = "Enter a valid email";
+
     if (!password) errors.password = "Password is required";
     else if (password.length < 4)
       errors.password = "Password must be at least 4 characters";
+
     return errors;
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setApiError(null);
+    setFieldErrors({});
 
     const errors = validate();
     if (Object.keys(errors).length > 0) {
@@ -46,7 +51,6 @@ export default function Login() {
       setSubmitting(false);
     }
   }
-
   return (
     <div className="auth-container">
       <h1 className="auth-title">Log in</h1>
@@ -59,6 +63,7 @@ export default function Login() {
           <input
             id="email"
             type="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -72,11 +77,12 @@ export default function Login() {
           )}
         </div>
 
-        <div className="auth-field" style={{ marginTop: "16px" }}>
+        <div className="auth-field">
           <label htmlFor="password">Password</label>
           <input
             id="password"
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
@@ -90,12 +96,7 @@ export default function Login() {
           )}
         </div>
 
-        <button
-          type="submit"
-          className="auth-submit"
-          disabled={submitting}
-          style={{ marginTop: "24px" }}
-        >
+        <button type="submit" className="auth-submit" disabled={submitting}>
           {submitting ? "Logging in..." : "Log in"}
         </button>
       </form>
