@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import api from "../../api.js";
 import EventCard from "../EventCard/EventCard.jsx";
 import "./EventList.css";
-
+const eventsPerPage = 4;
 export default function EventList() {
   const [sortBy, setSortBy] = useState("date");
   const [filterCategory, setFilterCategory] = useState("all");
@@ -12,11 +12,15 @@ export default function EventList() {
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const eventsPerPage = 4;
-
   useEffect(() => {
+    const controller = new AbortController();
+
     setLoading(true);
-    fetch(api(`/events?name_like=${search}`))
+    setError(null);
+
+    fetch(api(`/events?name_like=${search}`), {
+      signal: controller.signal,
+    })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load events");
         return res.json();
@@ -26,14 +30,18 @@ export default function EventList() {
         setLoading(false);
       })
       .catch((err) => {
+        if (err.name === "AbortError") return;
         setError(err.message);
         setLoading(false);
       });
+
+    return () => controller.abort();
   }, [search]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setSearch(searchInput);
-    }, 400);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [searchInput]);

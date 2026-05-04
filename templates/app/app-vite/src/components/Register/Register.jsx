@@ -13,24 +13,25 @@ export default function Register() {
   const [fieldErrors, setFieldErrors] = useState({});
   const [apiError, setApiError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function validate() {
     const errors = {};
+
     if (!email.trim()) errors.email = "Email is required";
-    else if (!email.includes("@")) errors.email = "Enter a valid email";
+    else if (!emailRegex.test(email)) errors.email = "Enter a valid email";
+
     if (!password) errors.password = "Password is required";
     else if (password.length < 4)
       errors.password = "Password must be at least 4 characters";
-    if (!confirmPassword)
-      errors.confirmPassword = "Please confirm your password";
-    else if (password !== confirmPassword)
-      errors.confirmPassword = "Passwords do not match";
+
     return errors;
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setApiError(null);
+    setFieldErrors({});
 
     const errors = validate();
     if (Object.keys(errors).length > 0) {
@@ -40,10 +41,10 @@ export default function Register() {
 
     setSubmitting(true);
     try {
-      await register(email, password);
+      await login(email, password);
       navigate("/events");
     } catch (err) {
-      setApiError(err.message || "Registration failed. Please try again.");
+      setApiError(err.message || "Registeration failed. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -61,6 +62,7 @@ export default function Register() {
           <input
             id="email"
             type="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -74,15 +76,23 @@ export default function Register() {
           )}
         </div>
 
-        <div className="auth-field" style={{ marginTop: "16px" }}>
+        <div className="auth-field">
           <label htmlFor="password">Password</label>
           <input
             id="password"
             type="password"
+            autoComplete="new-password"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
-              setFieldErrors((prev) => ({ ...prev, password: null }));
+              setFieldErrors((prev) => ({
+                ...prev,
+                password: null,
+                confirmPassword:
+                  confirmPassword && e.target.value !== confirmPassword
+                    ? "Passwords do not match"
+                    : null,
+              }));
             }}
             className={fieldErrors.password ? "input-error" : ""}
             placeholder="••••••••"
@@ -92,11 +102,12 @@ export default function Register() {
           )}
         </div>
 
-        <div className="auth-field" style={{ marginTop: "16px" }}>
+        <div className="auth-field">
           <label htmlFor="confirmPassword">Confirm password</label>
           <input
             id="confirmPassword"
             type="password"
+            autoComplete="new-password"
             value={confirmPassword}
             onChange={(e) => {
               setConfirmPassword(e.target.value);
