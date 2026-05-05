@@ -1,0 +1,157 @@
+.cart-container {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cart-title {
+  font-size: 28px;
+  margin: 0;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  flex-wrap: wrap;
+}
+
+.cart-item-info { flex: 1; }
+
+.cart-item-name {
+  font-size: 16px;
+  margin: 0 0 4px;
+}
+
+.cart-item-price {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cart-item-controls button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-item-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cart-item-subtotal {
+  font-weight: 600;
+  font-size: 15px;
+  min-width: 60px;
+  text-align: right;
+}
+
+.cart-item-remove {
+  background: none;
+  border: none;
+  color: #c0392b;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.cart-summary {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.cart-total {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-checkout {
+  background: #3730a3;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-checkout:hover { background: #312e81; }
+
+.btn-clear-cart {
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #666;
+}
+
+.cart-auth-message {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.cart-auth-message p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.btn-login-redirect {
+  background: #3730a3;
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.btn-browse {
+  background: #3730a3;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+}
