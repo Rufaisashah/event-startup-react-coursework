@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import api from "../../api.js";
+import { useCart } from "../../context/CartContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 import "./EventDetail.css";
 
 export default function EventDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+  const { user } = useAuth();
+
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,6 +32,15 @@ export default function EventDetail() {
         setLoading(false);
       });
   }, [id]);
+
+  function handleAddToCart() {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    addToCart(event, quantity);
+    navigate("/cart");
+  }
 
   if (loading) return <p className="status-message">Loading event...</p>;
   if (error) return <p className="status-message error">{error}</p>;
@@ -112,7 +127,7 @@ export default function EventDetail() {
           <p className="quantity-total">
             Total: {isFree ? "Free" : `€${event.price * quantity}`}
           </p>
-          <button className="btn-add-to-cart">
+          <button className="btn-add-to-cart" onClick={handleAddToCart}>
             Add {quantity} ticket{quantity === 1 ? "" : "s"} to cart
           </button>
         </div>
