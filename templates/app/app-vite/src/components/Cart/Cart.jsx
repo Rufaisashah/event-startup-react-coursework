@@ -1,13 +1,59 @@
+import { useState } from "react";
 import { useCart } from "../../context/CartContext.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../api.js";
 import "./Cart.css";
 
 export default function Cart() {
   const { cartItems, removeFromCart, updateQuantity, totalPrice, clearCart } =
     useCart();
-  const { user } = useAuth();
+  const { user, token } = useAuth();
+  const navigate = useNavigate();
 
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState(null);
+
+  async function handleCheckout() {
+    console.log("Token:", token);
+    console.log("User:", user);
+    setCheckoutLoading(true);
+    setCheckoutError(null);
+
+    const orderData = {
+      userId: user.id,
+      items: cartItems.map((item) => ({
+        eventId: item.eventId,
+        eventName: item.eventName,
+        price: item.price,
+        quantity: item.quantity,
+      })),
+      totalPrice,
+      createdAt: new Date().toISOString(),
+    };
+
+    try {
+      const res = await fetch(api("/orders"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!res.ok) throw new Error("Checkout failed. Please try again.");
+
+      clearCart();
+      navigate("/checkout/success");
+    } catch (err) {
+      setCheckoutError(err.message);
+    } finally {
+      setCheckoutLoading(false);
+    }
+  }
+
+  // early return AFTER all hooks
   if (cartItems.length === 0) {
     return (
       <div className="cart-empty">
@@ -53,9 +99,7 @@ export default function Cart() {
             </div>
 
             <p className="cart-item-subtotal">
-              {item.price === 0
-                ? "Free"
-                : `€${item.price * item.quantity}`}
+              {item.price === 0 ? "Free" : `€${item.price * item.quantity}`}
             </p>
 
             <button
@@ -74,9 +118,16 @@ export default function Cart() {
         </p>
 
         {user ? (
-          <button className="btn-checkout">
-            Proceed to checkout
-          </button>
+          <div className="checkout-section">
+            {checkoutError && <p className="checkout-error">{checkoutError}</p>}
+            <button
+              className="btn-checkout"
+              onClick={handleCheckout}
+              disabled={checkoutLoading}
+            >
+              {checkoutLoading ? "Processing..." : "Proceed to checkout"}
+            </button>
+          </div>
         ) : (
           <div className="cart-auth-message">
             <p>You must be logged in to checkout.</p>
