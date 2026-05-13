@@ -12,6 +12,7 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import Checkout from "./components/Checkout/Checkout.jsx";
 import Orders from "./components/Orders/Orders.jsx";
+import OrderDetail from "./components/Orders/OrderDetail.jsx";
 
 import "./main.css";
 // Cart model: cart items are stored in localStorage via CartContext (no backend needed).
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
       { path: "cart", element: <Cart /> },
       { path: "checkout/success", element: <Checkout /> },
       { path: "orders", element: <Orders /> },
+      { path: "orders/:id", element: <OrderDetail /> },
     ],
   },
   { path: "/login", element: <Login /> },
