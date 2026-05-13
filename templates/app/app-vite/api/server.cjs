@@ -10,6 +10,7 @@ app.db = router.db;
 
 // Set secret FIRST before anything else
 app.set("secret", process.env.SECRET || "mysecretkey123");
+app.set("jwt options", { expiresIn: "24h" });
 
 const routeGuards = jsonServer.rewriter({
   "/api/login": "/login",
