@@ -155,3 +155,16 @@
   border-radius: 8px;
   text-decoration: none;
 }
+.checkout-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  align-items: flex-end;
+}
+
+.checkout-error {
+  font-size: 13px;
+  color: #c0392b;
+  margin: 0;
+}

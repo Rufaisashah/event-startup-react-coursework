@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import "./Register.css";
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -13,17 +15,24 @@ export default function Register() {
   const [fieldErrors, setFieldErrors] = useState({});
   const [apiError, setApiError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function validate() {
     const errors = {};
 
-    if (!email.trim()) errors.email = "Email is required";
-    else if (!emailRegex.test(email)) errors.email = "Enter a valid email";
+    if (!email.trim())
+      errors.email = "Email is required";
+    else if (!emailRegex.test(email))
+      errors.email = "Enter a valid email";
 
-    if (!password) errors.password = "Password is required";
+    if (!password)
+      errors.password = "Password is required";
     else if (password.length < 4)
       errors.password = "Password must be at least 4 characters";
+
+    if (!confirmPassword)
+      errors.confirmPassword = "Please confirm your password";
+    else if (password !== confirmPassword)
+      errors.confirmPassword = "Passwords do not match";
 
     return errors;
   }
@@ -41,10 +50,10 @@ export default function Register() {
 
     setSubmitting(true);
     try {
-      await login(email, password);
+      await register(email, password);
       navigate("/events");
     } catch (err) {
-      setApiError(err.message || "Registeration failed. Please try again.");
+      setApiError(err.message || "Registration failed. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -125,7 +134,6 @@ export default function Register() {
           type="submit"
           className="auth-submit"
           disabled={submitting}
-          style={{ marginTop: "24px" }}
         >
           {submitting ? "Creating account..." : "Create account"}
         </button>
