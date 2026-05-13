@@ -5,12 +5,9 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import { useCart } from "../../context/CartContext.jsx";
 import "./Layout.css";
 
-
-
 export default function Layout() {
   const { user, logout } = useAuth();
   const { totalItems } = useCart();
-
 
   return (
     <div className="site-wrapper">
@@ -47,6 +44,18 @@ export default function Layout() {
                 Events
               </NavLink>
             </li>
+            {user && (
+              <li>
+                <NavLink
+                  to="/orders"
+                  className={({ isActive }) =>
+                    isActive ? "nav-link active" : "nav-link"
+                  }
+                >
+                  My Orders
+                </NavLink>
+              </li>
+            )}
           </ul>
 
           <div className="nav-auth">
@@ -65,7 +74,6 @@ export default function Layout() {
               </>
             ) : (
               <>
-                
                 <NavLink to="/login" className="btn-login">
                   Log in
                 </NavLink>
