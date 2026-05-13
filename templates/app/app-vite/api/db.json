@@ -186,6 +186,20 @@
       "totalPrice": 79,
       "createdAt": "2026-05-13T07:18:30.828Z",
       "id": 3
+    },
+    {
+      "userId": 1,
+      "items": [
+        {
+          "eventId": 3,
+          "eventName": "JavaScript: Modern Patterns Workshop",
+          "price": 79,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 79,
+      "createdAt": "2026-05-13T07:26:35.030Z",
+      "id": 4
     }
   ]
 }
