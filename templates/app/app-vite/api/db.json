@@ -132,32 +132,5 @@
       "category": "Workshop"
     }
   ],
-  "orders": [
-    {
-      "userId": 2,
-      "items": [
-        {
-          "eventId": 2,
-          "eventName": "Hackathon: Build with AI",
-          "price": 0,
-          "quantity": 1
-        },
-        {
-          "eventId": 3,
-          "eventName": "JavaScript: Modern Patterns Workshop",
-          "price": 79,
-          "quantity": 1
-        },
-        {
-          "eventId": 4,
-          "eventName": "TypeScript Deep Dive",
-          "price": 89,
-          "quantity": 1
-        }
-      ],
-      "totalPrice": 168,
-      "createdAt": "2026-05-13T21:22:19.804Z",
-      "id": 1
-    }
-  ]
+  "orders": []
 }
