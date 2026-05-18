@@ -138,5 +138,20 @@
       "category": "Workshop"
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "userId": 1,
+      "items": [
+        {
+          "eventId": 3,
+          "eventName": "JavaScript: Modern Patterns Workshop",
+          "price": 79,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 79,
+      "createdAt": "2026-05-18T11:04:53.188Z",
+      "id": 2
+    }
+  ]
 }
