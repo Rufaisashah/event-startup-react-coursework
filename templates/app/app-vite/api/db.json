@@ -4,6 +4,21 @@
       "id": 1,
       "email": "demo@test.com",
       "password": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"
+    },
+    {
+      "email": "abc@test.com",
+      "password": "$2a$10$G5ED556YxaaPSdFiIsBUmuIA3FLpr9rHexK1tnMTwJS7cOsdI0gBC",
+      "id": 2
+    },
+    {
+      "email": "hello@test.com",
+      "password": "$2a$10$ky2.TGU30iv.sMM3k0r7SOa61icWd0ttax20gCSt1PYmAc1xgU5u2",
+      "id": 3
+    },
+    {
+      "email": "aaa@test.com",
+      "password": "$2a$10$jDXclitmkeRTL2QQTloyj.usECAahXSnixlLgxNxnzPcOz3Y/jSc2",
+      "id": 4
     }
   ],
   "events": [
@@ -140,7 +155,49 @@
   ],
   "orders": [
     {
+      "userId": 2,
+      "items": [
+        {
+          "eventId": 4,
+          "eventName": "TypeScript Deep Dive",
+          "price": 89,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 89,
+      "createdAt": "2026-05-23T09:10:20.394Z",
+      "id": 3
+    },
+    {
+      "userId": 2,
+      "items": [
+        {
+          "eventId": 5,
+          "eventName": "Copenhagen JS Meetup",
+          "price": 0,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 0,
+      "createdAt": "2026-05-23T09:10:54.016Z",
+      "id": 4
+    },
+    {
       "userId": 1,
+      "items": [
+        {
+          "eventId": 8,
+          "eventName": "Docker & Kubernetes for Developers",
+          "price": 95,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 95,
+      "createdAt": "2026-05-23T09:13:59.192Z",
+      "id": 5
+    },
+    {
+      "userId": 3,
       "items": [
         {
           "eventId": 3,
@@ -150,8 +207,22 @@
         }
       ],
       "totalPrice": 79,
-      "createdAt": "2026-05-18T11:04:53.188Z",
-      "id": 2
+      "createdAt": "2026-05-23T09:27:22.312Z",
+      "id": 6
+    },
+    {
+      "userId": 4,
+      "items": [
+        {
+          "eventId": 7,
+          "eventName": "Open Source Summit Nordic",
+          "price": 299,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 299,
+      "createdAt": "2026-05-23T09:56:23.997Z",
+      "id": 7
     }
   ]
 }

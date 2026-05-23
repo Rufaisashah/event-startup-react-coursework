@@ -16,7 +16,7 @@ useEffect(() => {
   }
 
   setLoading(true);
-  fetch(api("/orders"), {
+  fetch(api(`/orders?userId=${user.id}`), {
     headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => {
